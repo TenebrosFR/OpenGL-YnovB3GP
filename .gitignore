@@ -32,3 +32,6 @@
 *.app
 *.vsidx
 *.lock
+*.db
+*.db
+*.db
