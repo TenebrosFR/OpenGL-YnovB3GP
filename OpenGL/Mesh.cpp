@@ -2,24 +2,6 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "C:/Tout/Cours/3eme annee/OpenGl/OpenGL-YnovB3GP/external/stb-master/stb_image.h"
 
-Mesh::Mesh(GLuint programID, VEC3 _position, VEC3 _size, VECTOR<VEC3> _vertices, int verticeSize, VECTOR<VEC2>  _uvs, const char* texturePath, VECTOR<VEC3> _colors) : position(_position), size(_size), colors(_colors)
-{
-	for (int i = 0; i < verticeSize; i += 3) {
-		// Cr�ation des faces
-		VEC3 v1 = VEC3(_vertices[i + 1].x - _vertices[i].x, _vertices[i + 1].y - _vertices[i].y, _vertices[i + 1].z - _vertices[i].z);
-		VEC3 v2 = VEC3(_vertices[i + 2].x - _vertices[i].x, _vertices[i + 2].y - _vertices[i].y, _vertices[i + 2].z - _vertices[i].z);
-		// Calcul de la normale du triangle
-		VEC3 normal = glm::normalize(glm::cross(v1, v2));
-		// On le met 3 fois pour le nombre de points
-		for (int z = 0; z < 3; z++)loadNormals.push_back(normal);
-	}
-	indexVBO(_vertices, _uvs, loadNormals, indices, verticesIndex, uvsIndex, normalsIndex);
-	VAO(programID);
-	texturing(programID, texturePath);
-	VBO();
-	model = TRANSLATE(MATRIX(1.0f), position);
-}
-
 Mesh::Mesh(GLuint programID,VEC3 _position, VEC3 _size, const char* objPath, const char* texturePath, VECTOR<VEC3> _colors) : position(_position), size(_size), colors(_colors)
 {
 	loadOBJ(objPath, loadVertices, loadUV, loadNormals);
