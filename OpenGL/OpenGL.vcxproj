@@ -71,7 +71,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <PublicIncludeDirectories>includes;C:\Tout\Cours\3eme annee\OpenGl\OpenGL\external\glfw-3.3.8\include\GLFW;C:\Tout\Cours\3eme annee\OpenGl\OpenGL\external\stb-master;C:\Tout\Cours\3eme annee\OpenGl\OpenGL\external\glm-master\glm;C:\Tout\Cours\3eme annee\OpenGl\OpenGL\external\glew-2.1.0\include\GL;$(PublicIncludeDirectories)</PublicIncludeDirectories>
+    <PublicIncludeDirectories>includes;C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\external\glfw-3.3.8\include\GLFW;C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\external\stb-master;C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\external\glm-master\glm;C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\external\glew-2.1.0\include\GL;$(PublicIncludeDirectories)</PublicIncludeDirectories>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -111,7 +111,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glu32.lib;C:\Tout\Cours\3eme annee\OpenGl\OpenGL\external\glew-2.1.0\glew-2.1.0\lib\Release\Win32\glew32.lib;C:\Tout\Cours\3eme annee\OpenGl\OpenGL\external\glfw-3.3.8\glfw-3.3.8.bin.WIN32\lib-vc2022\glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\external\glew-2.1.0\glew-2.1.0\lib\Release\Win32\glew32.lib;C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\external\glfw-3.3.8\glfw-3.3.8.bin.WIN32\lib-vc2022\glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -146,7 +146,6 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="includes\shader.hpp" />
-    <ClInclude Include="Main.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="objloader.hpp" />
     <ClInclude Include="resource.h" />

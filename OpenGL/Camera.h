@@ -4,8 +4,8 @@
 #include <vector>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <C:/Tout/Cours/3eme annee/OpenGl/OpenGL/external/glm-master/glm/glm.hpp>
-#include "C:/Tout/Cours/3eme annee/OpenGl/OpenGL/external/glm-master/glm/ext/matrix_transform.hpp"
+#include <C:/Tout/Cours/3eme annee/OpenGl/OpenGL-YnovB3GP/external/glm-master/glm/glm.hpp>
+#include "C:/Tout/Cours/3eme annee/OpenGl/OpenGL-YnovB3GP/external/glm-master/glm/ext/matrix_transform.hpp"
 #include <iostream>
 
 class Camera

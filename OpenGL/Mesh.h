@@ -4,11 +4,17 @@
 #include <vector>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include "C:/Tout/Cours/3eme annee/OpenGl/OpenGL/external/glm-master/glm/ext/matrix_transform.hpp"
+#include "C:/Tout/Cours/3eme annee/OpenGl/OpenGL-YnovB3GP/external/glm-master/glm/ext/matrix_transform.hpp"
 #include <iostream>
 #include "objloader.hpp"
 #include "vboindexer.hpp"
-
+//Define
+#define VECTOR std::vector
+#define VEC3 glm::vec3
+#define VEC2 glm::vec2
+#define MATRIX glm::mat4
+#define TRANSLATE glm::translate
+//
 class Mesh
 {
 private:
@@ -27,16 +33,19 @@ private:
 	int isTexture = 0;
 public:
 	//Mesh using .obj
-	Mesh(GLuint programID, glm::vec3 _position, glm::vec3 _size, const char* objPath, std::vector<glm::vec3> _colors, const char* texturePath = "");
+	Mesh(GLuint programID, glm::vec3 _position, glm::vec3 _size, const char* objPath, const char* texturePath, std::vector<glm::vec3> _colors = std::vector<glm::vec3>());
 	//Mesh using array
-	Mesh(GLuint programID, glm::vec3 _position, glm::vec3 _size, std::vector<glm::vec3> _vertices, int verticeSize, std::vector<glm::vec3> _colors, std::vector<glm::vec2> _uvs, const char* texturePath);
+	Mesh(GLuint programID, glm::vec3 _position, glm::vec3 _size, std::vector<glm::vec3> _vertices, int verticeSize, std::vector<glm::vec2> _uvs, const char* texturePath, std::vector<glm::vec3> _colors = std::vector<glm::vec3>());
 	~Mesh();
 
 
 	void VAO(GLuint programID);
 	void texturing(GLuint programID, const char* texturePath);
+	void AddColor();
 	void VBO();
-	void CreateArrayVBO(GLuint buffer,int size,glm::vec2 elem);
+	void CreateArrayVBOVec2(GLuint* buffer,int size, glm::vec2* adress);
+	void CreateArrayVBOVec3(GLuint* buffer, int size, glm::vec3* adress);
 	void CalculateMVP(glm::mat4 projection, glm::mat4 view);
 	void Draw(glm::vec3 camPos);
+	int MakeTampon(int attribArray, GLuint buffer, int vectorSize = 3);
 };

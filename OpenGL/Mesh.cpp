@@ -1,24 +1,15 @@
 ﻿#include "Mesh.h"
 #define STB_IMAGE_IMPLEMENTATION
-#include "C:/Tout/Cours/3eme annee/OpenGl/OpenGL/external/stb-master/stb_image.h"
+#include "C:/Tout/Cours/3eme annee/OpenGl/OpenGL-YnovB3GP/external/stb-master/stb_image.h"
 
-Mesh::Mesh(GLuint programID,glm::vec3 _position, glm::vec3 _size, const char* objPath, std::vector<glm::vec3> _colors, const char* texturePath) : position(_position), size(_size), colors(_colors)
-{
-	loadOBJ(objPath, loadVertices, loadUV, loadNormals);
-	indexVBO(loadVertices, loadUV, loadNormals, indices, verticesIndex, uvsIndex, normalsIndex);
-	VAO(programID);
-	texturing(programID, texturePath);
-	VBO();
-	model = glm::translate(glm::mat4(1.0f), position);
-}
-Mesh::Mesh(GLuint programID, glm::vec3 _position, glm::vec3 _size, std::vector<glm::vec3> _vertices, int verticeSize, std::vector<glm::vec3> _colors, std::vector<glm::vec2>  _uvs, const char* texturePath) : position(_position), size(_size), colors(_colors)
+Mesh::Mesh(GLuint programID, VEC3 _position, VEC3 _size, VECTOR<VEC3> _vertices, int verticeSize, VECTOR<VEC2>  _uvs, const char* texturePath, VECTOR<VEC3> _colors) : position(_position), size(_size), colors(_colors)
 {
 	for (int i = 0; i < verticeSize; i += 3) {
 		// Cr�ation des faces
-		glm::vec3 v1 = glm::vec3(_vertices[i + 1].x - _vertices[i].x, _vertices[i + 1].y - _vertices[i].y, _vertices[i + 1].z - _vertices[i].z);
-		glm::vec3 v2 = glm::vec3(_vertices[i + 2].x - _vertices[i].x, _vertices[i + 2].y - _vertices[i].y, _vertices[i + 2].z - _vertices[i].z);
+		VEC3 v1 = VEC3(_vertices[i + 1].x - _vertices[i].x, _vertices[i + 1].y - _vertices[i].y, _vertices[i + 1].z - _vertices[i].z);
+		VEC3 v2 = VEC3(_vertices[i + 2].x - _vertices[i].x, _vertices[i + 2].y - _vertices[i].y, _vertices[i + 2].z - _vertices[i].z);
 		// Calcul de la normale du triangle
-		glm::vec3 normal = glm::normalize(glm::cross(v1, v2));
+		VEC3 normal = glm::normalize(glm::cross(v1, v2));
 		// On le met 3 fois pour le nombre de points
 		for (int z = 0; z < 3; z++)loadNormals.push_back(normal);
 	}
@@ -26,7 +17,17 @@ Mesh::Mesh(GLuint programID, glm::vec3 _position, glm::vec3 _size, std::vector<g
 	VAO(programID);
 	texturing(programID, texturePath);
 	VBO();
-	model = glm::translate(glm::mat4(1.0f), position);
+	model = TRANSLATE(MATRIX(1.0f), position);
+}
+
+Mesh::Mesh(GLuint programID,VEC3 _position, VEC3 _size, const char* objPath, const char* texturePath, VECTOR<VEC3> _colors) : position(_position), size(_size), colors(_colors)
+{
+	loadOBJ(objPath, loadVertices, loadUV, loadNormals);
+	indexVBO(loadVertices, loadUV, loadNormals, indices, verticesIndex, uvsIndex, normalsIndex);
+	VAO(programID);
+	texturing(programID, texturePath);
+	VBO();
+	model = TRANSLATE(MATRIX(1.0f), position);
 }
 
 void Mesh::VAO(GLuint programID)
@@ -61,61 +62,59 @@ void Mesh::texturing(GLuint programID,const char* texturePath)
 	}else std::cout << "Failed to load texture" << std::endl;
 	stbi_image_free(data);
 }
+void Mesh::AddColor() {
+	glGenBuffers(1, &colorBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
+	glBufferData(GL_ARRAY_BUFFER, colors.size(), &colors[0], GL_STATIC_DRAW);
+}
 void Mesh::VBO()
 {
 	//indices
 	glGenBuffers(1, &elementBuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBuffer);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned short), &indices[0], GL_STATIC_DRAW);
-	//Couleur
-	//CreateArrayVBO(colorBuffer, colors.size(), colors[0]);
-	glGenBuffers(1, &colorBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
-	glBufferData(GL_ARRAY_BUFFER, colors.size(), &colors[0], GL_STATIC_DRAW);
-	//Vertex
-	CreateArrayVBO(vertexBuffer, verticesIndex.size() * sizeof(glm::vec3), verticesIndex[0]);
-	//UV
-	CreateArrayVBO(uvBuffer, uvsIndex.size() * sizeof(glm::vec2), uvsIndex[0]);
-	//Normal
-	CreateArrayVBO(normalBuffer, normalsIndex.size() * sizeof(glm::vec3), normalsIndex[0]);
+	if (colors.size() != 0) AddColor();
+	CreateArrayVBOVec3(&vertexBuffer, verticesIndex.size() * sizeof(VEC3), &verticesIndex[0]);
+	CreateArrayVBOVec2(&uvBuffer, uvsIndex.size() * sizeof(VEC2), &uvsIndex[0]);
+	CreateArrayVBOVec3(&normalBuffer, normalsIndex.size() * sizeof(VEC3), &normalsIndex[0]);
 }
 
-void Mesh::CreateArrayVBO(GLuint buffer, int size,glm::vec2 elem) {
-	glGenBuffers(1, &buffer);
-	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glBufferData(GL_ARRAY_BUFFER, size * sizeof(unsigned short), &elem, GL_STATIC_DRAW);
+void Mesh::CreateArrayVBOVec3(GLuint* buffer, int size, VEC3* adress) {
+	glGenBuffers(1, buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, *buffer);
+	glBufferData(GL_ARRAY_BUFFER, size, adress, GL_STATIC_DRAW);
+}
+void Mesh::CreateArrayVBOVec2(GLuint* buffer, int size, VEC2* adress) {
+	glGenBuffers(1, buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, *buffer);
+	glBufferData(GL_ARRAY_BUFFER, size, adress, GL_STATIC_DRAW);
 }
 
-void Mesh::CalculateMVP(glm::mat4 projection, glm::mat4 view)
+void Mesh::CalculateMVP(MATRIX projection, MATRIX view)
 { 
 	model = glm::scale(model, size);
 	MVP = projection * view * model;
 }
-
-void Mesh::Draw(glm::vec3 camPos)
+int Mesh::MakeTampon(int attribArray, GLuint buffer,int vectorSize) {
+	glEnableVertexAttribArray(attribArray);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	glVertexAttribPointer(attribArray, vectorSize, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	return attribArray;
+}
+void Mesh::Draw(VEC3 camPos)
 {
+	VECTOR<int> ints = VECTOR<int>();
 	glUniform3fv(lightPosID, 1, &camPos[0]);
 	glUniform3fv(viewPosID, 1, &camPos[0]);
 	glUniform1i(isTextureID, isTexture);
 	glUniformMatrix4fv(modelID, 1, GL_FALSE, &model[0][0]);
 	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
- 	//tampon Vertex
-	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	//tampon Color
-	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	//tampo UV
-	glEnableVertexAttribArray(2);
-	glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	//tampo Normal
-	glEnableVertexAttribArray(3);
-	glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
-	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	//text
+
+	ints.push_back(MakeTampon(0, vertexBuffer));
+	if (colors.size() != 0) ints.push_back(MakeTampon(1, colorBuffer));
+	ints.push_back(MakeTampon(2, uvBuffer, 2));
+	ints.push_back(MakeTampon(3, normalBuffer));
+	//texture
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glUniform1i(textureID, 0);
@@ -127,9 +126,5 @@ void Mesh::Draw(glm::vec3 camPos)
 		GL_UNSIGNED_SHORT, // type
 		(void*)0 // décalage du tableau de tampons
 	);
-	//Disable For memory
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
-	glDisableVertexAttribArray(2);
-	glDisableVertexAttribArray(3);
+	for (int element : ints) glDisableVertexAttribArray(element); //memory
 }

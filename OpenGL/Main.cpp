@@ -3,65 +3,20 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "includes/shader.hpp"
-#include "C:/Tout/Cours/3eme annee/OpenGl/OpenGL/external/glm-master/glm/ext/matrix_clip_space.hpp"
+#include "C:/Tout/Cours/3eme annee/OpenGl/OpenGL-YnovB3GP/external/glm-master/glm/ext/matrix_clip_space.hpp"
 #include <iostream>
 #include <vector>
-
-
+//Define
+#define VECTOR std::vector
+#define VEC3 glm::vec3
+#define VEC2 glm::vec2
+//
 //Variables global
-Camera* cam = new Camera(glm::vec3(0));
-std::vector<Mesh*> meshes;
+Camera* cam = new Camera(VEC3(0));
+VECTOR<Mesh*> meshes;
 float size = 1.0f;
 double lastColorChangeTime = 0.0;
-GLuint MatrixID;
-GLuint colorBuffer;
 GLFWwindow* window;
-GLuint cubeUV;
-GLuint texture;
-GLuint textureID;
-float MoveSpeed = 0.1f;
-
-// Un cube possde six faces avec deux triangles pour chaque, donc cela fait 6*2=12 triangles et 12*3=36 sommets
-
-
-GLfloat cube_vertex[] = {
--1.0f,-1.0f,-1.0f, // triangle 1 : d�but
-	-1.0f,-1.0f, 1.0f,
-	-1.0f, 1.0f, 1.0f, // triangle 1 : fin 
-	1.0f, 1.0f,-1.0f, // triangle 2 : d�but 
-	-1.0f,-1.0f,-1.0f,
-	-1.0f, 1.0f,-1.0f, // triangle 2 : fin 
-	1.0f,-1.0f, 1.0f,
-	-1.0f,-1.0f,-1.0f,
-	1.0f,-1.0f,-1.0f,
-	1.0f, 1.0f,-1.0f,
-	1.0f,-1.0f,-1.0f,
-	-1.0f,-1.0f,-1.0f,
-	-1.0f,-1.0f,-1.0f,
-	-1.0f, 1.0f, 1.0f,
-	-1.0f, 1.0f,-1.0f,
-	1.0f,-1.0f, 1.0f,
-	-1.0f,-1.0f, 1.0f,
-	-1.0f,-1.0f,-1.0f,
-	-1.0f, 1.0f, 1.0f,
-	-1.0f,-1.0f, 1.0f,
-	1.0f,-1.0f, 1.0f,
-	1.0f, 1.0f, 1.0f,
-	1.0f,-1.0f,-1.0f,
-	1.0f, 1.0f,-1.0f,
-	1.0f,-1.0f,-1.0f,
-	1.0f, 1.0f, 1.0f,
-	1.0f,-1.0f, 1.0f,
-	1.0f, 1.0f, 1.0f,
-	1.0f, 1.0f,-1.0f,
-	-1.0f, 1.0f,-1.0f,
-	1.0f, 1.0f, 1.0f,
-	-1.0f, 1.0f,-1.0f,
-	-1.0f, 1.0f, 1.0f,
-	1.0f, 1.0f, 1.0f,
-	-1.0f, 1.0f, 1.0f,
-	1.0f,-1.0f, 1.0f
-};
 
 GLfloat colorData[] = {
 	1.0f,0.0f,0.0f,
@@ -106,61 +61,24 @@ GLfloat cube_color[] = {
 	0.820f,  0.883f,  0.371f,
 	0.982f,  0.099f,  0.879f
 };
-GLfloat cube_uv[] = {
-	0.000059f, 1.0f - 0.000004f,
-	0.000103f, 1.0f - 0.336048f,
-	0.335973f, 1.0f - 0.335903f,
-	1.000023f, 1.0f - 0.000013f,
-	0.667979f, 1.0f - 0.335851f,
-	0.999958f, 1.0f - 0.336064f,
-	0.667979f, 1.0f - 0.335851f,
-	0.336024f, 1.0f - 0.671877f,
-	0.667969f, 1.0f - 0.671889f,
-	1.000023f, 1.0f - 0.000013f,
-	0.668104f, 1.0f - 0.000013f,
-	0.667979f, 1.0f - 0.335851f,
-	0.000059f, 1.0f - 0.000004f,
-	0.335973f, 1.0f - 0.335903f,
-	0.336098f, 1.0f - 0.000071f,
-	0.667979f, 1.0f - 0.335851f,
-	0.335973f, 1.0f - 0.335903f,
-	0.336024f, 1.0f - 0.671877f,
-	1.000004f, 1.0f - 0.671847f,
-	0.999958f, 1.0f - 0.336064f,
-	0.667979f, 1.0f - 0.335851f,
-	0.668104f, 1.0f - 0.000013f,
-	0.335973f, 1.0f - 0.335903f,
-	0.667979f, 1.0f - 0.335851f,
-	0.335973f, 1.0f - 0.335903f,
-	0.668104f, 1.0f - 0.000013f,
-	0.336098f, 1.0f - 0.000071f,
-	0.000103f, 1.0f - 0.336048f,
-	0.000004f, 1.0f - 0.671870f,
-	0.336024f, 1.0f - 0.671877f,
-	0.000103f, 1.0f - 0.336048f,
-	0.336024f, 1.0f - 0.671877f,
-	0.335973f, 1.0f - 0.335903f,
-	0.667969f, 1.0f - 0.671889f,
-	1.000004f, 1.0f - 0.671847f,
-	0.667979f, 1.0f - 0.335851f
-};
 
-std::vector<glm::vec2> ToVec2(const GLfloat myArray[], int givenSize) {
-	std::vector<glm::vec2> result;
+
+VECTOR<VEC2> ToVec2(const GLfloat myArray[], int givenSize) {
+	VECTOR<VEC2> result;
 	for (int i = 0; i < givenSize; i += 2) {
-		glm::vec2 vec(myArray[i], myArray[i + 1]);
+		VEC2 vec(myArray[i], myArray[i + 1]);
 		result.push_back(vec);
 	}
 	return result;
 }
 
-std::vector<glm::vec3> ToVec3(const GLfloat myArray[],int givenSize) {
-	std::vector<glm::vec3> result;
+VECTOR<VEC3> ToVec3(const GLfloat myArray[],int givenSize) {
+	VECTOR<VEC3> result;
 	for (int i = 0; i < givenSize; i += 3) {
-		glm::vec3 vec(myArray[i], myArray[i + 1],myArray[i + 2]);
+		VEC3 vec(myArray[i], myArray[i + 1],myArray[i + 2]);
 		result.push_back(vec);
 	}
-	std::vector<glm::vec3> one = result;
+	VECTOR<VEC3> one = result;
 	return result;
 }
 
@@ -169,20 +87,6 @@ void ViewProjection() {
 	glm::mat4 projection = glm::perspective(90.f, 2560.f / 1440.f, 0.1f, 100.0f);
 
 	for (Mesh* mesh : meshes)	mesh->CalculateMVP(projection, view);
-}
-void UpdateCube() {
-	// generate random red, green, and blue values between 0 and 1
-	for (int i = 0; i < sizeof(cube_color) / 4; i += 3) {
-		float r = (float)rand() / RAND_MAX;
-		float g = (float)rand() / RAND_MAX;
-		float b = (float)rand() / RAND_MAX;
-		cube_color[i] = r;
-		cube_color[i + 1] = g;
-		cube_color[i + 2] = b;
-		glGenBuffers(1, &colorBuffer);
-		glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(cube_color), cube_color, GL_STATIC_DRAW);
-	}
 }
 void changeColor() {
 	// get the current time
@@ -199,7 +103,6 @@ void changeColor() {
 		colorData[1] = g;
 		colorData[2] = r;
 		glClearColor(r, g, b, 1.0f);
-		UpdateCube();
 	}
 }
 double lastX = 0, lastY = 0;
@@ -248,9 +151,8 @@ int myGLFW(void) {
 	cam->updateCamera(window);
 	//
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	int verticeSize = sizeof(cube_vertex) / sizeof(cube_vertex[0]), colorSize = sizeof(cube_color) / sizeof(cube_color[0]), uvSize = sizeof(cube_uv) / sizeof(cube_uv[0]);
-	meshes.push_back(new Mesh(programID, glm::vec3(1, 2, 1), glm::vec3(1, 1, 1), "cube.obj", ToVec3(cube_color,colorSize),"container.jpg"));
-	meshes.push_back(new Mesh(programID, glm::vec3(3, 1, 3), glm::vec3(1, 1, 1), ToVec3(cube_vertex, verticeSize), verticeSize / 3, ToVec3(cube_color,colorSize), ToVec2(cube_uv, uvSize), "container.jpg"));
+	int colorSize = sizeof(cube_color) / sizeof(cube_color[0]);
+	meshes.push_back(new Mesh(programID, VEC3(1, 2, 1), VEC3(1, 1, 1), "cube.obj","container.jpg"));
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 	do {

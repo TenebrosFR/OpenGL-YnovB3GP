@@ -1,6 +1,6 @@
 ﻿  Mesh.cpp
-C:\Tout\Cours\3eme annee\OpenGl\OpenGL\OpenGL\Mesh.cpp(76,89): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Tout\Cours\3eme annee\OpenGl\OpenGL\OpenGL\Mesh.cpp(78,75): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Tout\Cours\3eme annee\OpenGl\OpenGL\OpenGL\Mesh.cpp(80,87): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Tout\Cours\3eme annee\OpenGl\OpenGL\OpenGL\Mesh.cpp(129,2): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-  OpenGL.vcxproj -> C:\Tout\Cours\3eme annee\OpenGl\OpenGL\x64\Debug\OpenGL.exe
+C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\OpenGL\Mesh.cpp(77,90): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\OpenGL\Mesh.cpp(81,76): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\OpenGL\Mesh.cpp(85,88): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\OpenGL\Mesh.cpp(137,2): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  OpenGL.vcxproj -> C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\x64\Debug\OpenGL.exe

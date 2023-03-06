@@ -4,7 +4,7 @@
 #include <string>
 #include <cstring>
 
-#include <C:/Tout/Cours/3eme annee/OpenGl/OpenGL/external/glm-master/glm/glm.hpp>
+#include <C:/Tout/Cours/3eme annee/OpenGl/OpenGL-YnovB3GP/external/glm-master/glm/glm.hpp>
 
 #include "objloader.hpp"
 
