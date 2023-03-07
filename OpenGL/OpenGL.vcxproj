@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="includes\shader.hpp" />
+    <ClInclude Include="Maping.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="objloader.hpp" />
     <ClInclude Include="Player.h" />

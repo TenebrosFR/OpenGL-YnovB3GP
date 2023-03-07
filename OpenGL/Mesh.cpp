@@ -9,9 +9,8 @@ Mesh::Mesh(GLuint programID,VEC3 _position, VEC3 _size, const char* objPath, con
 	VAO(programID);
 	texturing(programID, texturePath);
 	VBO();
-	model = TRANSLATE(MATRIX(1.0f), position);
+	model = glm::scale(TRANSLATE(MATRIX(1.0f), position), size);
 }
-
 void Mesh::VAO(GLuint programID)
 {
 	MatrixID = glGetUniformLocation(programID, "MVP");
@@ -73,7 +72,6 @@ void Mesh::CreateArrayVBOVec2(GLuint* buffer, int size, VEC2* adress) {
 
 void Mesh::CalculateMVP(MATRIX projection, MATRIX view)
 { 
-	model = glm::scale(model, size);
 	MVP = projection * view * model;
 }
 int Mesh::MakeTampon(int attribArray, GLuint buffer,int vectorSize) {
@@ -107,4 +105,46 @@ void Mesh::Draw(VEC3 camPos)
 		(void*)0 // décalage du tableau de tampons
 	);
 	for (int element : ints) glDisableVertexAttribArray(element); //memory
+}
+
+//Collisions 
+bool Mesh::checkCollision(VEC3 playerPosition, float height, float width) {
+	// Calculate the maximum and minimum bounds of the mesh
+	VEC3 meshMin = position - size / 2.0f;
+	VEC3 meshMax = position + size / 2.0f;
+
+	// Calculate the maximum and minimum bounds of the object
+	VEC3 objectMin = playerPosition - VEC3(width, height, width);
+	VEC3 objectMax = playerPosition + VEC3(width, height, width);
+
+
+	// Check if the bounds overlap
+	bool overlapX = (meshMin.x <= objectMax.x && meshMax.x >= objectMin.x);
+	bool overlapY = (meshMin.y <= objectMax.y && meshMax.y >= objectMin.y);
+	bool overlapZ = (meshMin.z <= objectMax.z && meshMax.z >= objectMin.z);
+
+	return overlapX && overlapY && overlapZ;
+}
+
+bool Mesh::intersectRayTriangle(VEC3 rayOrigin, VEC3 rayDirection, VEC3 v1, VEC3 v2, VEC3 v3) {
+	VEC3 edge1 = v2 - v1;
+	VEC3 edge2 = v3 - v1;
+	VEC3 h = cross(rayDirection, edge2);
+	float a = dot(edge1, h);
+	if (a > -EPSILON && a < EPSILON) {
+		return false;
+	}
+	float f = 1 / a;
+	VEC3 s = rayOrigin - v1;
+	float u = f * dot(s, h);
+	if (u < 0 || u > 1) {
+		return false;
+	}
+	VEC3 q = cross(s, edge1);
+	float v = f * dot(rayDirection, q);
+	if (v < 0 || u + v > 1) {
+		return false;
+	}
+	float t = f * dot(edge2, q);
+	return (t > EPSILON);
 }

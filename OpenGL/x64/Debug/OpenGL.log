@@ -1,8 +1,2 @@
 ﻿  Main.cpp
-C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\OpenGL\Main.cpp(65,40): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-  Player.cpp
-C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\OpenGL\Player.cpp(5,120): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\OpenGL\Player.cpp(11,27): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\OpenGL\Player.cpp(22,24): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  Generating Code...
   OpenGL.vcxproj -> C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\x64\Debug\OpenGL.exe

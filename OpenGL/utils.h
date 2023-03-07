@@ -17,3 +17,4 @@
 #define TRANSLATE glm::translate
 #define NORMALIZE glm::normalize
 //
+inline float EPSILON = 0.0001f;

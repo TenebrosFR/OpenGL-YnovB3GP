@@ -1,5 +1,6 @@
 ﻿#include "Player.h"
 #include "Mesh.h"
+#include "Maping.h"
 #include "includes/shader.hpp"
 #include "C:/Tout/Cours/3eme annee/OpenGl/OpenGL-YnovB3GP/external/glm-master/glm/ext/matrix_clip_space.hpp"
 //Variables global
@@ -9,9 +10,9 @@ double lastColorChangeTime = 0.0;
 GLFWwindow* window;
 
 GLfloat colorData[] = {
-	1.0f,0.0f,0.0f,
-	0.0f,1.0f,0.0f,
-	0.0f,0.0f,1.0f,
+	0.0f, 0.0f, 0.2f, // bleu foncé
+	0.0f, 1.0f, 0.0f,
+	0.0f, 0.0f, 1.0f,
 };
 
 void ViewProjection() {
@@ -21,30 +22,15 @@ void ViewProjection() {
 
 	for (Mesh* mesh : meshes)	mesh->CalculateMVP(projection, view);
 }
-void changeColor() {
-	// get the current time
-	double currentTime = glfwGetTime();
-	if (currentTime - lastColorChangeTime > 4.0) {
-		// update the time of the last color change
-		lastColorChangeTime = currentTime;
-		// generate random red, green, and blue values between 0 and 1
-		float r = (float)rand() / RAND_MAX;
-		float g = (float)rand() / RAND_MAX;
-		float b = (float)rand() / RAND_MAX;
-		//
-		colorData[0] = b;
-		colorData[1] = g;
-		colorData[2] = r;
-		glClearColor(r, g, b, 1.0f);
-	}
-}
 
 int myGLFW(void) {
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	window = glfwCreateWindow(2560, 1440, "Ratio", NULL, NULL);
+	window = glfwCreateWindow(2560, 1440, "Virgil's Plateformer", NULL, NULL);
+	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	if (window == NULL) {
 		fprintf(stderr, "Failed to open GLFW window. If you have an intel gpu , they are not 3.3 compatible. Try the 2.1 version. /n");
 		glfwTerminate();
@@ -57,34 +43,20 @@ int myGLFW(void) {
 		glfwTerminate();
 		return -1;
 	}
-
-
-	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-	// Seulement au moment de l'initialisation.
-	GLuint programID = LoadShaders("VertexShader.vert", "FragmentShader.frag");
-	player = new Player(programID,VEC3(0),1.8f);
-	// generate random red, green, and blue values between 0 and 1
-	float r = (float)rand() / RAND_MAX;
-	float g = (float)rand() / RAND_MAX;
-	float b = (float)rand() / RAND_MAX;
-	colorData[0] = b;
-	colorData[1] = g;
-	colorData[2] = r;
-	glClearColor(r, g, b, 1.0f);
-	//
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	meshes.push_back(new Mesh(programID, VEC3(1, 2, 1), VEC3(1, 1, 1), "cube.obj","container.jpg"));
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
+	glClearColor(0.0f, 0.0f, 0.33f, 1.0f);
+	//Fin de l'init des packages
+	GLuint programID = LoadShaders("VertexShader.vert", "FragmentShader.frag");
+	player = new Player(programID,VEC3(0, 5, 0),1.8f);
+	meshes = meshesOfMap(programID);
 	do {
 		//Clear color
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//shader used
 		glUseProgram(programID);
-		//updates colors
-		changeColor();
 		//load rendering
-		player->newLoop(window);
+		player->newLoop(window,meshes);
 		ViewProjection();
 		//Drawing
 		for (Mesh* mesh : meshes)	mesh->Draw(player->getCamera()->getPos());
