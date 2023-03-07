@@ -1,18 +1,9 @@
-﻿#include "Camera.h"
+﻿#include "Player.h"
 #include "Mesh.h"
-#include "stdio.h"
-#include "stdlib.h"
 #include "includes/shader.hpp"
 #include "C:/Tout/Cours/3eme annee/OpenGl/OpenGL-YnovB3GP/external/glm-master/glm/ext/matrix_clip_space.hpp"
-#include <iostream>
-#include <vector>
-//Define
-#define VECTOR std::vector
-#define VEC3 glm::vec3
-#define VEC2 glm::vec2
-//
 //Variables global
-Camera* cam = new Camera(VEC3(0));
+Player* player;
 VECTOR<Mesh*> meshes;
 double lastColorChangeTime = 0.0;
 GLFWwindow* window;
@@ -24,8 +15,9 @@ GLfloat colorData[] = {
 };
 
 void ViewProjection() {
-	glm::mat4 view = cam->getView();
+	glm::mat4 view = player->getCamera()->getView();
 	glm::mat4 projection = glm::perspective(90.f, 2560.f / 1440.f, 0.1f, 100.0f);
+	glUniform3fv(*(player->viewPosID()), 1, &(player->getCamera()->getPos())[0]);
 
 	for (Mesh* mesh : meshes)	mesh->CalculateMVP(projection, view);
 }
@@ -70,8 +62,7 @@ int myGLFW(void) {
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 	// Seulement au moment de l'initialisation.
 	GLuint programID = LoadShaders("VertexShader.vert", "FragmentShader.frag");
-
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(g_uv_buffer_data_cube), g_uv_buffer_data_cube, GL_STATIC_DRAW);
+	player = new Player(programID,VEC3(0),1.8f);
 	// generate random red, green, and blue values between 0 and 1
 	float r = (float)rand() / RAND_MAX;
 	float g = (float)rand() / RAND_MAX;
@@ -80,7 +71,6 @@ int myGLFW(void) {
 	colorData[1] = g;
 	colorData[2] = r;
 	glClearColor(r, g, b, 1.0f);
-	cam->updateCamera(window);
 	//
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	meshes.push_back(new Mesh(programID, VEC3(1, 2, 1), VEC3(1, 1, 1), "cube.obj","container.jpg"));
@@ -89,17 +79,15 @@ int myGLFW(void) {
 	do {
 		//Clear color
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		//listen input
-		cam->updateCamera(window);
-
 		//shader used
 		glUseProgram(programID);
 		//updates colors
 		changeColor();
 		//load rendering
+		player->newLoop(window);
 		ViewProjection();
 		//Drawing
-		for (Mesh* mesh : meshes)	mesh->Draw(cam->getPos());
+		for (Mesh* mesh : meshes)	mesh->Draw(player->getCamera()->getPos());
 		//Memory
 		glfwSwapBuffers(window);
 		glfwPollEvents();

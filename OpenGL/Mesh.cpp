@@ -18,7 +18,6 @@ void Mesh::VAO(GLuint programID)
 	modelID = glGetUniformLocation(programID, "model");
 	isTextureID = glGetUniformLocation(programID, "isTexture");
 	lightPosID = glGetUniformLocation(programID, "lightPos");
-	viewPosID = glGetUniformLocation(programID, "viewPos");
 	//Creation de mesh
 	glGenVertexArrays(1, &vertexArrayID);
 	glBindVertexArray(vertexArrayID);
@@ -87,7 +86,6 @@ void Mesh::Draw(VEC3 camPos)
 {
 	VECTOR<int> ints = VECTOR<int>();
 	glUniform3fv(lightPosID, 1, &camPos[0]);
-	glUniform3fv(viewPosID, 1, &camPos[0]);
 	glUniform1i(isTextureID, isTexture);
 	glUniformMatrix4fv(modelID, 1, GL_FALSE, &model[0][0]);
 	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);

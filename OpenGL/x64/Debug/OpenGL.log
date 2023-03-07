@@ -1,14 +1,8 @@
-﻿  Camera.cpp
-C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\OpenGL\Camera.cpp(40,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  Main.cpp
-C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\OpenGL\Main.cpp(112,18): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\OpenGL\Main.cpp(113,28): warning C4305: '=': truncation from 'double' to 'float'
-  Mesh.cpp
-C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\OpenGL\Mesh.cpp(59,90): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\OpenGL\Mesh.cpp(60,76): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\OpenGL\Mesh.cpp(61,88): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\OpenGL\Mesh.cpp(110,2): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-  objloader.cpp
-  vboindexer.cpp
+﻿  Main.cpp
+C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\OpenGL\Main.cpp(65,40): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  Player.cpp
+C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\OpenGL\Player.cpp(5,120): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\OpenGL\Player.cpp(11,27): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\OpenGL\Player.cpp(22,24): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   Generating Code...
   OpenGL.vcxproj -> C:\Tout\Cours\3eme annee\OpenGl\OpenGL-YnovB3GP\x64\Debug\OpenGL.exe

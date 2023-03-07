@@ -1,25 +1,13 @@
 #pragma once
-#include <stdio.h>
-#include <stdlib.h>
-#include <vector>
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include "C:/Tout/Cours/3eme annee/OpenGl/OpenGL-YnovB3GP/external/glm-master/glm/ext/matrix_transform.hpp"
-#include <iostream>
+#include "utils.h"
 #include "objloader.hpp"
 #include "vboindexer.hpp"
-//Define
-#define VECTOR std::vector
-#define VEC3 glm::vec3
-#define VEC2 glm::vec2
-#define MATRIX glm::mat4
-#define TRANSLATE glm::translate
 //
 class Mesh
 {
 private:
 	//ID
-	GLuint elementBuffer, modelID, viewPosID, lightPosID, isTextureID, MatrixID, vertexArrayID, vertexBuffer, colorBuffer, uvBuffer, normalBuffer, texture, textureID;
+	GLuint elementBuffer, modelID, lightPosID, isTextureID, MatrixID, vertexArrayID, vertexBuffer, colorBuffer, uvBuffer, normalBuffer, texture, textureID;
 	//VBO arrays
 	GLfloat* vertices, uvs;
 	//VBO .obk
