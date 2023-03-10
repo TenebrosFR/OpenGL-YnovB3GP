@@ -8,7 +8,8 @@ Player* player;
 VECTOR<Mesh*> meshes;
 double lastColorChangeTime = 0.0;
 GLFWwindow* window;
-
+const GLFWvidmode* mode;
+int screenWidth, screenHeight;
 GLfloat colorData[] = {
 	0.0f, 0.0f, 0.2f, // bleu foncé
 	0.0f, 1.0f, 0.0f,
@@ -17,7 +18,9 @@ GLfloat colorData[] = {
 
 void ViewProjection() {
 	glm::mat4 view = player->getCamera()->getView();
-	glm::mat4 projection = glm::perspective(90.f, 2560.f / 1440.f, 0.1f, 100.0f);
+	float aspectRatio = (float)mode->width / (float)mode->height;
+	float fovy = 2 * atan(tan(70.f / 2) * aspectRatio);
+	glm::mat4 projection = glm::perspective(fovy, aspectRatio, 0.1f, 100.0f);
 	glUniform3fv(*(player->viewPosID()), 1, &(player->getCamera()->getPos())[0]);
 
 	for (Mesh* mesh : meshes)	mesh->CalculateMVP(projection, view);
@@ -28,7 +31,9 @@ int myGLFW(void) {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	window = glfwCreateWindow(2560, 1440, "Virgil's Plateformer", NULL, NULL);
+	mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+	if (!mode) return -1;
+	GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Virgil's Plateformer", glfwGetPrimaryMonitor(), NULL);
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	if (window == NULL) {
@@ -48,7 +53,7 @@ int myGLFW(void) {
 	glClearColor(0.0f, 0.0f, 0.33f, 1.0f);
 	//Fin de l'init des packages
 	GLuint programID = LoadShaders("VertexShader.vert", "FragmentShader.frag");
-	player = new Player(programID,VEC3(0, 5, 0),1.8f);
+	player = new Player(programID,VEC3(0, 6, 0),1.8f);
 	meshes = meshesOfMap(programID);
 	do {
 		//Clear color

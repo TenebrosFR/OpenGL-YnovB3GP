@@ -110,8 +110,8 @@ void Mesh::Draw(VEC3 camPos)
 //Collisions 
 bool Mesh::checkCollision(VEC3 playerPosition, float height, float width) {
 	// Calculate the maximum and minimum bounds of the mesh
-	VEC3 meshMin = position - size / 2.0f;
-	VEC3 meshMax = position + size / 2.0f;
+	VEC3 meshMin = position - size ;
+	VEC3 meshMax = position + size ;
 
 	// Calculate the maximum and minimum bounds of the object
 	VEC3 objectMin = playerPosition - VEC3(width, height, width);
